@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dynamic Work Hours Calculator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -88,12 +89,19 @@
             margin: 10px;
             transition: all 0.3s ease;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         button:hover {
             background-color: #feb47b;
             transform: scale(1.05);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        button i {
+            margin-right: 10px;
         }
 
         #result {
@@ -164,8 +172,8 @@
         </div>
     </div>
     <div>
-        <button onclick="addSession()">Add Session</button>
-        <button onclick="calculateWorkHours()">Calculate Total Hours</button>
+        <button onclick="addSession()"><i class="fas fa-plus"></i>Add Session</button>
+        <button onclick="calculateWorkHours()"><i class="fas fa-calculator"></i>Calculate Total Hours</button>
     </div>
     <div id="result"></div>
 
@@ -194,8 +202,14 @@
                 const endTime = document.getElementById(`session${index + 1}-end`).value;
 
                 if (startTime && endTime) {
-                    const startSeconds = timeToSeconds(startTime);
-                    const endSeconds = timeToSeconds(endTime);
+                    let startSeconds = timeToSeconds(startTime);
+                    let endSeconds = timeToSeconds(endTime);
+
+                    // If the end time is earlier than the start time (indicating it crosses midnight)
+                    if (endSeconds < startSeconds) {
+                        endSeconds += 24 * 3600; // Add 24 hours (in seconds) to the end time
+                    }
+
                     totalSeconds += (endSeconds - startSeconds);
                 }
             });
