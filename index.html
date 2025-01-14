@@ -218,9 +218,9 @@
     <div id="sessions">
         <div class="session">
             <label for="session1-start">Session 1 - Kommen:</label>
-            <input type="time" id="session1-start">
+            <i class="fa-regular fa-clock"></i><input type="time" id="session1-start">
             <label for="session1-end">Session 1 - Gehen:</label>
-            <input type="time" id="session1-end">
+            <i class="fa-regular fa-clock"></i><input type="time" id="session1-end">
         </div>
     </div>
     <div>
@@ -239,9 +239,9 @@
             newSession.classList.add('session');
             newSession.innerHTML = `
                 <label for="session${sessionCount}-start">Session ${sessionCount} - Kommen:</label>
-                <input type="time" id="session${sessionCount}-start">
+               <i class="fa-regular fa-clock"></i> <input type="time" id="session${sessionCount}-start">
                 <label for="session${sessionCount}-end">Session ${sessionCount} - Gehen:</label>
-                <input type="time" id="session${sessionCount}-end">
+                <i class="fa-regular fa-clock"></i><input type="time" id="session${sessionCount}-end">
             `;
             sessionsDiv.appendChild(newSession);
         }
