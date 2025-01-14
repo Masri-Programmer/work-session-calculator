@@ -16,6 +16,8 @@
         body {
             font-family: 'Arial', sans-serif;
             background: linear-gradient(135deg, #ff7e5f, #feb47b);
+            background-size: 400% 400%;
+            animation: gradientAnimation 10s ease infinite;
             color: #fff;
             display: flex;
             justify-content: center;
@@ -23,6 +25,28 @@
             min-height: 100vh;
             padding: 20px;
             flex-direction: column;
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background: linear-gradient(135deg, #ff7e5f, #feb47b);
+            }
+
+            25% {
+                background: linear-gradient(135deg, #6a11cb, #2575fc);
+            }
+
+            50% {
+                background: linear-gradient(135deg, #f12711, #f5af19);
+            }
+
+            75% {
+                background: linear-gradient(135deg, #a8c0ff, #3f2b96);
+            }
+
+            100% {
+                background: linear-gradient(135deg, #ff7e5f, #feb47b);
+            }
         }
 
         h1 {
