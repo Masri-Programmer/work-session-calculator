@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Work Hours Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            flex-direction: column;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        #sessions {
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 20px;
+        }
+
+        .session {
+            display: flex;
+            gap: 2rem auto;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .session:hover {
+            transform: scale(1.05);
+            border-color: #ff7e5f;
+        }
+
+        label {
+            color: #fff;
+            font-size: 1.1rem;
+        }
+
+        input[type="time"] {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: #fff;
+            color: #333;
+            font-size: 1rem;
+            width: 40%;
+            transition: all 0.3s ease;
+        }
+
+        input[type="time"]:focus {
+            outline: none;
+            border: 2px solid #ff7e5f;
+            background-color: #f9f9f9;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 30px;
+            background-color: #ff7e5f;
+            color: #fff;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            background-color: #feb47b;
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        #result {
+            padding: 15px;
+            background-color: #fff;
+            color: #333;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+            font-size: 1.2rem;
+            margin-top: 30px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Work Hours Calculator</h1>
+    <div id="sessions">
+        <div class="session">
+            <label for="session1-start">Session 1 - Kommen:</label>
+            <input type="time" id="session1-start">
+            <label for="session1-end">Session 1 - Gehen:</label>
+            <input type="time" id="session1-end">
+        </div>
+    </div>
+    <div>
+        <button onclick="addSession()">Add Session</button>
+        <button onclick="calculateWorkHours()">Calculate Total Hours</button>
+    </div>
+    <div id="result"></div>
+
+    <script>
+        let sessionCount = 1;
+
+        function addSession() {
+            sessionCount++;
+            const sessionsDiv = document.getElementById('sessions');
+            const newSession = document.createElement('div');
+            newSession.classList.add('session');
+            newSession.innerHTML = `
+                <label for="session${sessionCount}-start">Session ${sessionCount} - Kommen:</label>
+                <input type="time" id="session${sessionCount}-start">
+                <label for="session${sessionCount}-end">Session ${sessionCount} - Gehen:</label>
+                <input type="time" id="session${sessionCount}-end">
+            `;
+            sessionsDiv.appendChild(newSession);
+        }
+
+        function calculateWorkHours() {
+            let totalSeconds = 0;
+
+            document.querySelectorAll('.session').forEach((session, index) => {
+                const startTime = document.getElementById(`session${index + 1}-start`).value;
+                const endTime = document.getElementById(`session${index + 1}-end`).value;
+
+                if (startTime && endTime) {
+                    const startSeconds = timeToSeconds(startTime);
+                    const endSeconds = timeToSeconds(endTime);
+                    totalSeconds += (endSeconds - startSeconds);
+                }
+            });
+
+            const totalHours = Math.floor(totalSeconds / 3600);
+            const totalMinutes = Math.floor((totalSeconds % 3600) / 60);
+            const totalSecondsRemaining = totalSeconds % 60;
+
+            const result = document.getElementById('result');
+            result.style.display = 'block';
+            result.textContent = `Total Work Time: ${totalHours} hours, ${totalMinutes} minutes, ${totalSecondsRemaining} seconds`;
+        }
+
+        function timeToSeconds(time) {
+            const [hours, minutes] = time.split(':').map(Number);
+            return (hours * 3600) + (minutes * 60);
+        }
+    </script>
+</body>
+
+</html>
