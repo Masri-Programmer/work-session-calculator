@@ -458,6 +458,57 @@
         // Add an event listener to update the theme when the system's theme changes
         systemTheme.addEventListener('change', updateThemeFromSystem);
 
+        document.querySelectorAll('input[type="time"]').forEach(input => {
+    input.addEventListener('paste', (event) => {
+        event.preventDefault();
+        const pastedData = event.clipboardData.getData('text');
+
+        const timeRegex = /^(\d{2}):(\d{2})(?::\d{2})?$/;
+        const match = pastedData.match(timeRegex);
+
+        if (match) {
+            const hours = match[1].padStart(2, '0');
+            const minutes = match[2].padStart(2, '0');
+            input.value = `${hours}:${minutes}`;
+        }
+    });
+});
+
+// Ensure newly added time inputs also support paste functionality
+function addSession() {
+    sessionCount++;
+    const sessionsDiv = document.getElementById('sessions');
+    const newSession = document.createElement('div');
+    newSession.classList.add('session');
+    newSession.innerHTML = `
+        <div class="time-wrapper">
+            <label for="session${sessionCount}-start">Session ${sessionCount} - Kommen:</label>
+            <i class="fa-regular fa-clock"></i>
+            <input type="time" id="session${sessionCount}-start">
+        </div>
+        <div class="time-wrapper">
+            <label for="session${sessionCount}-end">Session ${sessionCount} - Gehen:</label>
+            <i class="fa-regular fa-clock"></i>
+            <input type="time" id="session${sessionCount}-end">
+        </div>
+    `;
+    sessionsDiv.appendChild(newSession);
+
+    newSession.querySelectorAll('input[type="time"]').forEach(input => {
+        input.addEventListener('paste', (event) => {
+            event.preventDefault();
+            const pastedData = event.clipboardData.getData('text');
+            const timeRegex = /^(\d{2}):(\d{2})(?::\d{2})?$/;
+            const match = pastedData.match(timeRegex);
+            if (match) {
+                const hours = match[1].padStart(2, '0');
+                const minutes = match[2].padStart(2, '0');
+                input.value = `${hours}:${minutes}`;
+            }
+        });
+    });
+}
+
     </script>
 </body>
 
