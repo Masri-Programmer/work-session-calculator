@@ -342,6 +342,7 @@
     <div>
         <button onclick="addSession()"><i class="fas fa-plus"></i>Add Session</button>
         <button onclick="calculateWorkHours()"><i class="fas fa-calculator"></i>Calculate Total Hours</button>
+        <button onclick="exportSchedule()"><i class="fas fa-download"></i>Export Schedule</button>
         <button class="theme-toggle theme-toggle--toggled." type="button" title="Toggle theme" aria-label="Toggle theme"
             onclick="toggleTheme()">
             <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="1em" height="1em" fill="currentColor"
@@ -508,7 +509,40 @@ function addSession() {
         });
     });
 }
+function exportSchedule() {
+    const schedule = [];
 
+    document.querySelectorAll('.session').forEach((session, index) => {
+        const startTime = document.getElementById(`session${index + 1}-start`).value;
+        const endTime = document.getElementById(`session${index + 1}-end`).value;
+
+        if (startTime && endTime) {
+            schedule.push({
+                session: `Session ${index + 1}`,
+                start: startTime,
+                end: endTime
+            });
+        }
+    });
+
+    const scheduleJSON = JSON.stringify(schedule, null, 2);
+    console.log(scheduleJSON);
+
+    // Display the data in the UI
+    const result = document.getElementById('result');
+    result.style.display = 'block';
+    result.textContent = `Schedule:\n${schedule.map(s => `${s.session}: ${s.start} - ${s.end}`).join('\n')}`;
+
+    // Offer as a download
+    const blob = new Blob([scheduleJSON], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'schedule.json';
+    link.textContent = 'Download Schedule';
+    link.style.display = 'block';
+    result.appendChild(link);
+}
     </script>
 </body>
 
